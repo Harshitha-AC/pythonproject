@@ -1,0 +1,22 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from time import sleep
+import smtplib
+chrome_driver_path="C:\Developerchrdrive\chromedriver.exe"
+driver=webdriver.Chrome(executable_path=chrome_driver_path)
+URL="https://www.amazon.com/RockJam-Electronic-Keyboard-SuperKit-Headphones/dp/B01AJJIQQQ/ref=sr_1_1_sspa?crid=1GCZRK7LWP32E&keywords=keyboard+piano&qid=1658226845&sprefix=keyboard+%2Caps%2C754&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFTVFA"
+driver.get(URL)
+BUY_PRICE=200
+price=driver.find_element(By.CLASS_NAME,"a-price-whole")
+print(price.text)
+sleep(5)
+if price<BUY_PRICE:
+    MY_EMAIL = "mye97319@gmail.com"
+    MY_PASSWORD = "yourpassword"
+    message = "This is the price you need!!Just grab it"
+    with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+        connection.starttls()
+        connection.login(MY_EMAIL, MY_PASSWORD)
+        connection.sendmail(from_addr=MY_EMAIL, to_addrs=MY_EMAIL,
+                            msg=f"Subject:Amazon Price Alert!!\n\n{message}\n{URL}")
+
